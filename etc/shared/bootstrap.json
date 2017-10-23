@@ -2,11 +2,11 @@
    "Type_" : "SelfInstance",
    "m_Agents" : [
       {
-		"Type_" : "PluginAgent",
-		"m_PluginPath" : "shared/plugins/",
-		"m_ScanInterval" : 30,
-		"m_bEnableByDefault" : false
-	  },
+      "Type_" : "PluginAgent",
+      "m_PluginPath" : "shared/plugins/",
+      "m_ScanInterval" : 30,
+      "m_bEnableByDefault" : false
+     },
       {
          "Type_" : "GoalAgent"
       },
@@ -98,7 +98,7 @@
          "m_LearnNewName" : [ "Ok, I will go by %s now" ],
          "m_LearnNewNameFail" : [ "Sorry but I cannot rename myself that" ],
          "m_LearnNewPerson" : [ "It is a pleasure to meet you %s." ],
-		 "m_LearnNewBlindPerson" : [ "Hi %s, I'm having a little trouble seeing you. Please step in front of the camera." ],
+       "m_LearnNewBlindPerson" : [ "Hi %s, I'm having a little trouble seeing you. Please step in front of the camera." ],
          "m_MeEntity" : "me",
          "m_YouEntity" : "you"
       },
@@ -133,9 +133,6 @@
          "m_LearnObjectResponses" : [ "This object is new to me, I will try to remember it" ],
          "m_TrainingImageCount" : 10,
          "m_bEnableObjectTraining" : true
-      },
-      {
-         "Type_" : "WEXAgent"
       },
       {
          "Type_" : "DisplayAgent",
@@ -222,7 +219,6 @@
             "AlchemyV1",
             "RelationshipExtractionV1",
             "LanguageTranslatorV1",
-            "RobotGatewayV1",
             "PackageStoreV1"
          ],
          "m_NetworkCongestionThreshold" : 10
@@ -291,7 +287,7 @@
                "m_IntentOverride" : "m_IntentOverride",
                "m_PreCacheFile" : "shared/conversation-precache.txt",
                "m_ServiceId" : "ConversationV1",
-               "m_WorkspaceId" : "8432262a-a3fb-4d45-851c-44180d7d75ad",
+               "m_WorkspaceId" : "db76acdb-42b5-42d8-b479-bbb4e90aae79",
                "m_WorkspaceKey" : "self_wex",
                "m_bPriority" : false
             },
@@ -311,7 +307,7 @@
                "m_IntentOverride" : "m_IntentOverride",
                "m_PreCacheFile" : "shared/conversation-precache.txt",
                "m_ServiceId" : "ConversationV1",
-               "m_WorkspaceId" : "a410e51b-6ef8-4740-b8c3-ab6f06a37662",
+               "m_WorkspaceId" : "1b4faf0d-eddb-4bc0-9771-490082882f9e",
                "m_WorkspaceKey" : "self_dialog",
                "m_bPriority" : false
             }
@@ -330,6 +326,10 @@
             {
                "m_Class" : "WeatherIntent",
                "m_Intent" : "weather*"
+            },
+            {
+               "m_Class" : "AQIIntent",
+               "m_Intent" : "aqi*"
             },
             {
                "m_Class" : "LearningIntent",
@@ -354,10 +354,6 @@
             {
                "m_Class" : "RequestIntent",
                "m_Intent" : "request*"
-            },
-            {
-               "m_Class" : "WEXIntent",
-               "m_Intent" : "wex*"
             },
             {
                "m_Class" : "NameIntent",
@@ -389,18 +385,6 @@
          "m_MinMissNodeConfidence" : 0.59999999999999998
       },
       {
-         "Type_" : "ImageClassifier",
-         "m_ClassifierDate" : "2016-11-14T06:47:45.320Z",
-         "m_ClassifierId" : "self_567727091",
-         "m_ClassifierName" : "self",
-         "m_MaxCacheSize" : 104857600,
-         "m_MinClassifyConfidence" : 0.40000000000000002,
-         "m_ServiceId" : "VisualRecognitionV1",
-         "m_bForceRetrain" : false,
-         "m_bUseDefaultClassifier" : true,
-         "m_fRestartTime" : 300
-      },
-      {
          "Type_" : "PersonClassifier",
          "m_DetectFacesInterval" : 0.5,
          "m_FaceClassifierFile" : "shared/opencv/lbpcascade_frontalface.xml",
@@ -418,9 +402,9 @@
       {
          "Type_" : "TouchClassifier"
       },
-	  {
-	  	 "Type_" : "ObjectClassifier"
-	  }
+     {
+       "Type_" : "ObjectClassifier"
+     }
    ],
    "m_EmbodimentCreds" : {
       "m_BearerToken" : "",
@@ -432,9 +416,9 @@
       {
          "Type_" : "ImageExtractor"
       },
-	  {
-		  "Type_" : "DepthExtractor"
-	  },
+     {
+        "Type_" : "DepthExtractor"
+     },
       {
          "Type_" : "ProximityExtractor",
          "m_MaxSonarValue" : 2,
@@ -479,7 +463,7 @@
    "m_RobotName" : "Willow",
    "m_RobotType" : "",
    "m_RobotUrl" : "tcp://127.0.0.1",
-   "m_SelfVersion" : "0.0.0",
+   "m_SelfVersion" : "0.1.460",
    "m_Sensors" : [
       {
          "Type_" : "Camera",
@@ -526,16 +510,16 @@
       },
       {
          "m_Password" : "",
-         "m_ServiceId" : "RobotGatewayV1",
-         "m_URL" : "https://rg-gateway.mybluemix.net",
-         "m_User" : ""
-      },
-      {
-         "m_Password" : "",
          "m_ServiceId" : "WeatherCompanyDataV1",
          "m_URL" : "https://twcservice.mybluemix.net/api/weather",
          "m_User" : ""
       },
+      {
+         "m_Password" : "",
+         "m_ServiceId" : "AQIDataV1",
+         "m_URL" : "http://jsonplaceholder.typicode.com/posts",
+         "m_User" : ""
+      },      
       {
          "m_Password" : "",
          "m_ServiceId" : "ToneAnalyzerV1",
@@ -580,12 +564,6 @@
       },
       {
          "m_Password" : "",
-         "m_ServiceId" : "VisualRecognitionV1",
-         "m_URL" : "https://gateway-a.watsonplatform.net/visual-recognition/api",
-         "m_User" : ""
-      },
-      {
-         "m_Password" : "",
          "m_ServiceId" : "NaturalLanguageUnderstandingV1",
          "m_URL" : "https://gateway.watsonplatform.net/natural-language-understanding/api",
          "m_User" : ""
@@ -616,20 +594,8 @@
       },
       {
          "m_Password" : "",
-         "m_ServiceId" : "WEXV1",
-         "m_URL" : "http://cap-sg-prd-1.integration.ibmcloud.com:17296/api",
-         "m_User" : ""
-      },
-      {
-         "m_Password" : "",
          "m_ServiceId" : "TelephonyV1",
          "m_URL" : "ws://nexmo-watson.mybluemix.net/ws-embodiment",
-         "m_User" : ""
-      },
-      {
-         "m_Password" : "",
-         "m_ServiceId" : "IVAV1",
-         "m_URL" : "https://169.54.186.28/milsng/user/SVSProxy",
          "m_User" : ""
       },
       {
@@ -666,7 +632,7 @@
             "m_ShotDist" : 0.25,
             "m_bCacheEnabled" : true
        },
-	 {
+    {
          "Type_" : "Alchemy",
          "m_MaxCacheAge" : 168,
          "m_MaxCacheSize" : 5242880,
@@ -684,29 +650,6 @@
          "m_ReturnParameters" : [ "enriched.url.title", "enriched.url.url", "enriched.url.text" ],
          "m_ServiceId" : "NaturalLanguageUnderstandingV1",
          "m_Version" : "2017-02-27",
-         "m_bCacheEnabled" : true
-      },
-      {
-         "Type_" : "WEX",
-         "m_Collection" : "",
-         "m_MaxCacheAge" : 168,
-         "m_MaxCacheSize" : 5242880,
-         "m_RequestTimeout" : 30,
-         "m_ServiceId" : "WEXV1",
-         "m_bCacheEnabled" : true
-      },
-      {
-         "Type_" : "RobotGateway",
-         "m_HeartBeatInterval" : 15,
-         "m_MaxCacheAge" : 168,
-         "m_MaxCacheSize" : 5242880,
-         "m_PersistLogFilter" : [ "Conversation", "SelfInstance", "Health" ],
-         "m_PersistLogInterval" : 60,
-         "m_PersistLogLevel" : 0,
-         "m_RequestTimeout" : 30,
-         "m_ServiceId" : "RobotGatewayV1",
-         "m_bApplyParentHost" : true,
-         "m_bApplyRemoteConfigs" : true,
          "m_bCacheEnabled" : true
       },
       {
@@ -729,6 +672,18 @@
          "m_Units" : "m",
          "m_bCacheEnabled" : true
       },
+      {
+         "Type_" : "AQIData",
+         "m_Language" : "en-US",
+         "m_Latitude" : 30.159999847412109,
+         "m_Longitude" : -97.44000244140625,
+         "m_MaxCacheAge" : 168,
+         "m_MaxCacheSize" : 5242880,
+         "m_RequestTimeout" : 30,
+         "m_ServiceId" : "AQIDataV1",
+         "m_Units" : "m",
+         "m_bCacheEnabled" : true
+      },      
       {
          "Type_" : "ToneAnalyzer",
          "m_MaxCacheAge" : 720,
@@ -792,7 +747,7 @@
          "m_RequestTimeout" : 30,
          "m_ServiceId" : "URLServiceV1",
          "m_bCacheEnabled" : true
-      },
+      },          
       {
          "Type_" : "RetrieveAndRank",
          "m_MaxCacheAge" : 168,
@@ -801,16 +756,6 @@
          "m_ServiceId" : "RetrieveAndRankV1",
          "m_SolrId" : "",
          "m_WorkspaceId" : "",
-         "m_bCacheEnabled" : true
-      },
-      {
-         "Type_" : "VisualRecognition",
-         "m_APIVersion" : "2016-05-20",
-         "m_ClassifyThreshold" : 0.035000000149011612,
-         "m_MaxCacheAge" : 168,
-         "m_MaxCacheSize" : 5242880,
-         "m_RequestTimeout" : 30,
-         "m_ServiceId" : "VisualRecognitionV1",
          "m_bCacheEnabled" : true
       },
       {
@@ -837,14 +782,6 @@
          "m_MaxCacheSize" : 5242880,
          "m_RequestTimeout" : 30,
          "m_ServiceId" : "TelephonyV1",
-         "m_bCacheEnabled" : true
-      },
-      {
-         "Type_" : "IVA",
-         "m_MaxCacheAge" : 168,
-         "m_MaxCacheSize" : 5242880,
-         "m_RequestTimeout" : 30,
-         "m_ServiceId" : "IVAV1",
          "m_bCacheEnabled" : true
       },
       {

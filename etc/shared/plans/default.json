@@ -426,6 +426,43 @@
 				}]
 		}
 	},
+    {
+        "key": "aqi_answer",
+        "value": {
+            "Type_": "Plan",
+            "m_Actions": [{
+                "Type_": "CreateAction",
+                "m_ActionFlags": 0,
+                "m_ActionId": "fc0c580c-a737-415a-8842-ad3d73c883cd",
+                "m_CompletedState": "COMPLETED",
+                "m_FailedState": "FAILED",
+                "m_GoalParams": {
+                    "Type_": "ParamsMap"
+                },
+                "m_InitialState": "",
+                "m_MinPostCondition": 0.5,
+                "m_MinPreCondition": 0.5,
+                "m_Object": {
+                    "Type_": "Say",
+                    "m_Text": "My air quality report for ${location} ${date} says ${aqi}"
+                },
+                "m_ReplaceParams": true,
+                "m_bAttachToRoot": false,
+                "m_fImportance": 1
+            }],
+            "m_PlanId": "aqi_answer",
+            "m_PreConditions": [{
+                "Type_": "GoalNameCondition",
+                "m_GoalName": "aqi",
+                "m_GoalNameOp": "EQ"
+            },
+                {
+                    "Type_": "GoalStateCondition",
+                    "m_State": "ADDED",
+                    "m_StateOp": "EQ"
+                }]
+        }
+    },    
 	{
 		"key": "news_answer",
 		"value": {

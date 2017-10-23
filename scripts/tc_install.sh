@@ -37,7 +37,7 @@ if [ "$TOOLCHAIN" != "" ]; then
 		cd "$PACKAGES_DIR"
 		TOOLCHAIN_ZIP=$TOOLCHAIN.zip
 		echo "Downloading toolchain $TOOLCHAIN_ZIP..."
-		curl "${STORE_URL}/$TOOLCHAIN_ZIP" --output $TOOLCHAIN_ZIP
+		#curl "${STORE_URL}/$TOOLCHAIN_ZIP" --output $TOOLCHAIN_ZIP
 		rm -rf $TOOLCHAIN
 		unzip $TOOLCHAIN_ZIP
 		cd "$BUILD_DIR"
