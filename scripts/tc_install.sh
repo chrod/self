@@ -36,9 +36,11 @@ fi
 if [ "$TOOLCHAIN" != "" ]; then
 		cd "$PACKAGES_DIR"
 		TOOLCHAIN_ZIP=$TOOLCHAIN.zip
-		echo "Downloading toolchain $TOOLCHAIN_ZIP..."
-		curl "${STORE_URL}/$TOOLCHAIN_ZIP" --output $TOOLCHAIN_ZIP
-		rm -rf $TOOLCHAIN
+                if [ !-e "$PACKAGES_DIR/$TOOLCHAIN_ZIP" ]; then
+		   echo "Downloading toolchain $TOOLCHAIN_ZIP..."
+		   curl "${STORE_URL}/$TOOLCHAIN_ZIP" --output $TOOLCHAIN_ZIP
+ 		   rm -rf $TOOLCHAIN
+                fi
 		unzip $TOOLCHAIN_ZIP
 		cd "$BUILD_DIR"
 		qitoolchain create $TC_NAME "$PACKAGES_DIR/$TOOLCHAIN/toolchain.xml"
