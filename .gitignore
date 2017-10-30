@@ -76,4 +76,6 @@ vs2015/.workspace/
 config.json
 .qi
 build-mac
+build-linux
+build-raspi
 *.userprefs
