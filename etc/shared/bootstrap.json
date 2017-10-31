@@ -230,6 +230,12 @@
          "m_bFahrenheit" : true
       },
       {
+         "Type_" : "AQIAgent",
+         "m_DefaultCity" : "Armonk",
+         "m_AQIOutOfRangeMessage" : "I'm afraid I do not have an AQI report for your location. I can't seem to connect to the local sensor.",
+         "m_bFahrenheit" : true
+      },
+      {
          "Type_" : "ReminderAgent",
          "m_Delay" : 60,
          "m_Sayings" : [ "Not a problem", "Sure thing", "Will do", "You got it" ]
@@ -517,7 +523,7 @@
       {
          "m_Password" : "",
          "m_ServiceId" : "AQIDataV1",
-         "m_URL" : "http://jsonplaceholder.typicode.com/posts",
+         "m_URL" : "192.168.0.4",
          "m_User" : ""
       },      
       {
@@ -675,13 +681,13 @@
       {
          "Type_" : "AQIData",
          "m_Language" : "en-US",
-         "m_Latitude" : 30.159999847412109,
-         "m_Longitude" : -97.44000244140625,
+         "m_Latitude" : 30.15,
+         "m_Longitude" : -97.44,
          "m_MaxCacheAge" : 168,
          "m_MaxCacheSize" : 5242880,
          "m_RequestTimeout" : 30,
          "m_ServiceId" : "AQIDataV1",
-         "m_Units" : "m",
+         "m_Units" : "f",
          "m_bCacheEnabled" : true
       },      
       {

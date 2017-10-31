@@ -37,10 +37,9 @@ public:
 	{}
 
 	virtual void GetCurrentConditions( Location * a_Location, SendCallback a_Callback) = 0;
-	//virtual void GetHourlyForecast( Location * a_Location, SendCallback a_Callback ) = 0;
-	//virtual void GetTenDayForecast( Location * a_Location, SendCallback a_Callback ) = 0;
 
 	static void CelsiusToFahrenheit( const float & a_Celsius, float & a_Fahrenheit);
+	static void ConcentrationToCategory( const float & a_Concentration, std::string & a_Category);
 };
 
 #endif

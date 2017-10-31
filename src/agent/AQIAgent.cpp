@@ -30,6 +30,7 @@ void AQIAgent::Serialize(Json::Value & json)
 {
 	IAgent::Serialize(json);
 
+	// These correspond to config data in the AQIAgent definition in bootstrap.json file
 	json["m_bFahrenheit"] = m_bFahrenheit;
 	json["m_DefaultCity"] = m_DefaultCity;
 	json["m_AQIOutOfRangeMessage"] = m_AQIOutOfRangeMessage;
@@ -38,7 +39,6 @@ void AQIAgent::Serialize(Json::Value & json)
 void AQIAgent::Deserialize(const Json::Value & json)
 {
 	IAgent::Deserialize(json);
-
 	if (json.isMember("m_bFahrenheit"))
 		m_bFahrenheit = json["m_bFahrenheit"].asBool();
 	if (json.isMember("m_AQIOutOfRangeMessage"))
@@ -66,11 +66,12 @@ bool AQIAgent::OnStart()
 		return false;
 	}
 
+	// Two registered function callbacks, subscribed to blackboard topics
 	pInstance->GetBlackBoard()->SubscribeToType("Environment",
 		DELEGATE(AQIAgent, OnAnomaly, const ThingEvent &, this), TE_STATE);
 	pInstance->GetBlackBoard()->SubscribeToType("AQIIntent",
 		DELEGATE(AQIAgent, OnAQIRequest, const ThingEvent &, this), TE_ADDED);
-
+	
 	return true;
 }
 
@@ -99,6 +100,7 @@ void AQIAgent::OnAnomaly(const ThingEvent &a_ThingEvent)
 
 void AQIAgent::OnAQIRequest(const ThingEvent & a_ThingEvent)
 {
+	// When AQI report is requested, create an AQIRequest object
 	AQIIntent::SP spAQI = DynamicCast<AQIIntent>(a_ThingEvent.GetIThing());
 	if (spAQI)
 		new AQIRequest(this, spAQI);
@@ -109,7 +111,7 @@ AQIAgent::AQIRequest::AQIRequest(AQIAgent * a_pAgent, const AQIIntent::SP & a_sp
 	m_DateSpecified = m_spIntent->GetDate();
 	if (m_spIntent->GetLocation().empty() && !m_pAgent->m_DefaultCity.empty())
 		m_spIntent->SetLocation(m_pAgent->m_DefaultCity);
-
+	
 	ILocation * pLocation = Config::Instance()->FindService<ILocation>();
 	if (pLocation != NULL)
 	{
@@ -130,7 +132,7 @@ void AQIAgent::AQIRequest::OnLocation(const Json::Value & json)
 		if (json.isMember("location"))
 		{
 			Json::Value location = json["location"];
-			Log::Debug("AQIAgent", "Location: %s", location.toStyledString().c_str());
+			//Log::Status("AQIAgent", "Location: %s", location.toStyledString().c_str());
 			if (location.isMember("latitude"))
 			{
 				float fLat = 0.0f;
@@ -149,17 +151,9 @@ void AQIAgent::AQIRequest::OnLocation(const Json::Value & json)
 
 				Location a_Location(m_City, fLat, fLong);
 
-				//if (m_DateSpecified.size() > 0)
-				//{
-				//pAQI->GetTenDayForecast(&a_Location,
-				//	DELEGATE(AQIRequest, OnTenDayForecastReceived, const Json::Value &, this));
-				//}
-				//else
-				//{
 				pAQI->GetCurrentConditions(&a_Location,
 					DELEGATE(AQIRequest,
 						OnCurrentConditionsReceived, const Json::Value &, this));
-				//}
 				
 				bLocationFound = true;
 			}
@@ -167,20 +161,10 @@ void AQIAgent::AQIRequest::OnLocation(const Json::Value & json)
 
 		if (!bLocationFound)
 		{
-			//if (m_DateSpecified.empty())
-			//{
 			pAQI->GetCurrentConditions(NULL,
 				DELEGATE(AQIRequest,
 					OnCurrentConditionsReceived,
 					const Json::Value &, this));
-		//}
-			/*else
-			{
-				pAQI->GetTenDayForecast(NULL,
-					DELEGATE(AQIRequest,
-						OnTenDayForecastReceived, const Json::Value &, this));
-			}
-			*/
 		}
 	}
 	else
@@ -189,77 +173,27 @@ void AQIAgent::AQIRequest::OnLocation(const Json::Value & json)
 
 void AQIAgent::AQIRequest::OnCurrentConditionsReceived(const Json::Value & json)
 {
-	//if (json["forecasts"].isArray() && json["forecasts"].size() > 0)
+	// Report AQI sensor readings to the user (verbal, same as weather)
+	// Uses AQI Goal, and "Say" feature
 	{
-		Log::Debug("AQIAgent", "OnCurrentConditionsReceived()");
-		Json::Value forecasts = json["forecasts"][0];
-
-		float temperature = forecasts["temp"].asFloat();
-		if (m_pAgent->m_bFahrenheit)
-			IAQI::CelsiusToFahrenheit(temperature, temperature);
+		Json::Value aqi_data = json;
+		float temperature = aqi_data["current_temp_f"].asFloat();
+		float concentration_pm25 = aqi_data["pm2_5_atm"].asFloat();
+		std::string categoryPM25;
 
 		int roundTemp = (int)floor(temperature);
-
-		std::string skyCover;
-		if (forecasts.isMember("phrase_32char"))
-			skyCover = forecasts["phrase_32char"].asString();
+		int roundPM25 = (int)floor(concentration_pm25);
+		IAQI::ConcentrationToCategory(roundPM25, categoryPM25);
 
 		Goal::SP spGoal(new Goal("AQI"));
-		spGoal->GetParams()["sky_cover"] = skyCover;
 		spGoal->GetParams()["temperature"] = roundTemp;
-		spGoal->GetParams()["location"] = m_City;
+		//spGoal->GetParams()["location"] = m_City;
 		spGoal->GetParams()["date"] = "currently";
+		spGoal->GetParams()["concentration"] = roundPM25;
+		spGoal->GetParams()["category"] = categoryPM25;
 
 		m_spIntent->AddChild(spGoal);
 	}
 
 	delete this;
 }
-
-/*void AQIAgent::AQIRequest::OnTenDayForecastReceived(const Json::Value & json)
-{
-	float temperature = 0.0f;
-	std::string skyCover;
-
-	if (json.isMember("forecasts"))
-	{
-		const Json::Value & forecasts = json["forecasts"];
-		for (size_t i = 0; i < forecasts.size(); ++i)
-		{
-			if (forecasts[i].isMember("fcst_valid_local") &&
-				StringUtil::StartsWith(forecasts[i]["fcst_valid_local"].asString(), m_DateSpecified))
-			{
-				if (forecasts[i].isMember("day"))
-				{
-					Json::Value dayForecast = forecasts[i]["day"];
-					skyCover = dayForecast["shortcast"].asString();
-					if (m_pAgent->m_bFahrenheit)
-						IAQI::CelsiusToFahrenheit(dayForecast["temp"].asFloat(), temperature);
-					else
-						temperature = dayForecast["temp"].asFloat();
-				}
-				break;
-			}
-		}
-	}
-
-	int roundTemp = (int)floor(temperature);
-	if (!skyCover.empty())
-	{
-		Goal::SP spGoal(new Goal("AQI"));
-		spGoal->GetParams()["sky_cover"] = skyCover;
-		spGoal->GetParams()["temperature"] = roundTemp;
-		spGoal->GetParams()["location"] = m_City;
-		spGoal->GetParams()["date"] = "for that day";
-
-		m_spIntent->AddChild(spGoal);
-	}
-	else
-	{
-		Say::SP spSay(new Say(m_pAgent->m_AQIOutOfRangeMessage));
-		m_spIntent->AddChild(spSay);
-	}
-
-	delete this;
-}
-*/

@@ -444,7 +444,7 @@
                 "m_MinPreCondition": 0.5,
                 "m_Object": {
                     "Type_": "Say",
-                    "m_Text": "My air quality report for ${location} ${date} says ${aqi}"
+                    "m_Text": "My instantaneous air quality index for your sensor ${date} is ${concentration} micrograms per cubic meter, which is ${category} according to the EPA scale."
                 },
                 "m_ReplaceParams": true,
                 "m_bAttachToRoot": false,
@@ -453,7 +453,7 @@
             "m_PlanId": "aqi_answer",
             "m_PreConditions": [{
                 "Type_": "GoalNameCondition",
-                "m_GoalName": "aqi",
+                "m_GoalName": "AQI",
                 "m_GoalNameOp": "EQ"
             },
                 {
